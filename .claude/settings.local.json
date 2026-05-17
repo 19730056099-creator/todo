@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(npx vite *)",
+      "Bash(curl -s http://localhost:5174/)",
+      "Bash(curl -s http://localhost:5174/src/main.tsx)",
+      "Bash(curl -s http://localhost:5174/src/components/TodoForm.tsx)",
+      "Bash(npx tsc *)",
+      "Bash(node --loader ts-node/esm)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s http://localhost:5174/src/App.tsx)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(taskkill -f -im node.exe)",
+      "Bash(curl -s http://localhost:5173/src/main.tsx)",
+      "Bash(curl -s http://localhost:5173/src/App.tsx)",
+      "Bash(curl -s http://localhost:5173/src/components/AddTodoBar.tsx)",
+      "Bash(node *)",
+      "Bash(curl -s http://localhost:5173/src/store/useTodoStore.ts)"
+    ]
+  }
+}
