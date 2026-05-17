@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useTodoStore } from '../store/useTodoStore';
 import { filterTodos } from '../utils/filter';
 import TodoItem from './TodoItem';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface Props {
   onEdit: (id: string) => void;
@@ -13,6 +14,7 @@ export default function TodoList({ onEdit, onDelete }: Props) {
   const filter = useTodoStore((s) => s.filter);
   const setFilter = useTodoStore((s) => s.setFilter);
   const resetFilter = useTodoStore((s) => s.resetFilter);
+  const { mobile } = useMediaQuery();
 
   const [searchInput, setSearchInput] = useState(filter.searchQuery);
   const initialized = useRef(false);
@@ -40,8 +42,10 @@ export default function TodoList({ onEdit, onDelete }: Props) {
       <div
         style={{
           display: 'flex',
+          flexDirection: mobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: mobile ? 'stretch' : 'center',
+          gap: mobile ? 8 : 0,
           marginBottom: 12,
           padding: '0 4px',
         }}
@@ -69,8 +73,9 @@ export default function TodoList({ onEdit, onDelete }: Props) {
             borderRadius: 6,
             fontSize: 13,
             outline: 'none',
-            width: 170,
+            width: mobile ? '100%' : 170,
             color: '#333',
+            boxSizing: 'border-box',
           }}
         />
       </div>

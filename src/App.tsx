@@ -7,11 +7,13 @@ import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import ConfirmDialog from './components/ConfirmDialog';
 import { useTodoStore } from './store/useTodoStore';
+import { useMediaQuery } from './hooks/useMediaQuery';
 
 export default function App() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const deleteTodo = useTodoStore((s) => s.deleteTodo);
+  const { mobile } = useMediaQuery();
 
   const closeForm = () => setEditingId(null);
 
@@ -28,7 +30,7 @@ export default function App() {
         style={{
           maxWidth: 1000,
           margin: '0 auto',
-          padding: '40px 24px 60px',
+          padding: mobile ? '24px 16px 40px' : '40px 24px 60px',
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
         }}
@@ -38,18 +40,20 @@ export default function App() {
         <div
           style={{
             display: 'flex',
-            gap: 20,
-            marginTop: 28,
+            flexDirection: mobile ? 'column' : 'row',
+            gap: mobile ? 16 : 20,
+            marginTop: mobile ? 20 : 28,
             alignItems: 'flex-start',
           }}
         >
           <div
             style={{
-              flex: '0 0 220px',
+              flex: mobile ? 'none' : '0 0 220px',
+              width: mobile ? '100%' : undefined,
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: mobile ? 'row' : 'column',
               gap: 16,
-              position: 'sticky',
+              position: mobile ? 'static' : 'sticky',
               top: 32,
             }}
           >
@@ -64,6 +68,7 @@ export default function App() {
               flexDirection: 'column',
               gap: 16,
               minWidth: 0,
+              width: mobile ? '100%' : undefined,
             }}
           >
             <AddTodoBar />

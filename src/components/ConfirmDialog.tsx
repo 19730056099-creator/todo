@@ -1,3 +1,5 @@
+import { useMediaQuery } from '../hooks/useMediaQuery';
+
 interface Props {
   open: boolean;
   title: string;
@@ -17,6 +19,8 @@ export default function ConfirmDialog({
   onConfirm,
   onCancel,
 }: Props) {
+  const { mobile } = useMediaQuery();
+
   if (!open) return null;
 
   return (
@@ -29,6 +33,7 @@ export default function ConfirmDialog({
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 100,
+        padding: 16,
       }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onCancel();
@@ -38,9 +43,9 @@ export default function ConfirmDialog({
         style={{
           background: '#fff',
           borderRadius: 12,
-          padding: 28,
+          padding: mobile ? 20 : 28,
           width: 380,
-          maxWidth: '90vw',
+          maxWidth: '100%',
           boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
         }}
       >
@@ -49,12 +54,17 @@ export default function ConfirmDialog({
           {message}
         </p>
 
-        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+        <div style={{
+          display: 'flex',
+          gap: 10,
+          justifyContent: 'flex-end',
+          flexDirection: mobile ? 'column-reverse' : 'row',
+        }}>
           <button
             type="button"
             onClick={onCancel}
             style={{
-              padding: '8px 20px',
+              padding: '10px 20px',
               border: '1px solid #d0d0d0',
               borderRadius: 6,
               background: '#fff',
@@ -68,7 +78,7 @@ export default function ConfirmDialog({
             type="button"
             onClick={onConfirm}
             style={{
-              padding: '8px 20px',
+              padding: '10px 20px',
               border: 'none',
               borderRadius: 6,
               background: '#e53e3e',

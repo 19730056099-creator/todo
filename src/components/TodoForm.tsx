@@ -1,6 +1,7 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import type { Priority, TodoFormData } from '../types/todo';
 import { useTodoStore } from '../store/useTodoStore';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface Props {
   editingId: string | null;
@@ -27,6 +28,7 @@ export default function TodoForm({ editingId, onClose }: Props) {
   const editingTodo = editingId
     ? useTodoStore((s) => s.todos.find((t) => t.id === editingId))
     : null;
+  const { mobile } = useMediaQuery();
 
   const [form, setForm] = useState<TodoFormData>(defaultForm);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +91,7 @@ export default function TodoForm({ editingId, onClose }: Props) {
         style={{
           background: '#fff',
           borderRadius: 12,
-          padding: 28,
+          padding: mobile ? 20 : 28,
           width: 480,
           maxWidth: '90vw',
           maxHeight: '90vh',
@@ -156,7 +158,12 @@ export default function TodoForm({ editingId, onClose }: Props) {
           />
         </div>
 
-        <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: mobile ? 'column' : 'row',
+          gap: 12,
+          marginBottom: 16,
+        }}>
           <div style={{ flex: 1 }}>
             <label
               style={{ display: 'block', marginBottom: 4, fontSize: 13, fontWeight: 600 }}

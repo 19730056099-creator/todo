@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Priority } from '../types/todo';
 import { useTodoStore } from '../store/useTodoStore';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 const priorityOptions: { label: string; value: Priority }[] = [
   { label: '高', value: 'high' },
@@ -11,6 +12,7 @@ const priorityOptions: { label: string; value: Priority }[] = [
 export default function AddTodoBar() {
   const addTodo = useTodoStore((s) => s.addTodo);
   const todos = useTodoStore((s) => s.todos);
+  const { mobile, tablet } = useMediaQuery();
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
@@ -39,15 +41,22 @@ export default function AddTodoBar() {
     setError(null);
   };
 
+  const isCompact = mobile || tablet;
+
   return (
     <div style={{
       background: '#fff',
       borderRadius: 10,
-      padding: '14px 16px',
+      padding: isCompact ? '12px' : '14px 16px',
       border: '1px solid #2d2d2d',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
     }}>
-      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+      <div style={{
+        display: 'flex',
+        gap: 8,
+        alignItems: 'center',
+        flexWrap: isCompact ? 'wrap' : 'nowrap',
+      }}>
         <input
           type="text"
           name="todo-title"
@@ -59,7 +68,7 @@ export default function AddTodoBar() {
           placeholder="添加新的任务…"
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
           style={{
-            flex: 1,
+            flex: isCompact ? '1 1 100%' : 1,
             padding: '8px 12px',
             border: `1px solid ${error ? '#dc2626' : '#d0d0d0'}`,
             borderRadius: 6,
@@ -73,13 +82,14 @@ export default function AddTodoBar() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           style={{
+            flex: isCompact ? 1 : undefined,
             padding: '8px 12px',
             border: '1px solid #d0d0d0',
             borderRadius: 6,
             fontSize: 13,
             outline: 'none',
             background: '#fff',
-            minWidth: 100,
+            minWidth: isCompact ? 0 : 100,
             color: '#333',
           }}
         >
@@ -93,13 +103,14 @@ export default function AddTodoBar() {
           value={priority}
           onChange={(e) => setPriority(e.target.value as Priority)}
           style={{
+            flex: isCompact ? 1 : undefined,
             padding: '8px 12px',
             border: '1px solid #d0d0d0',
             borderRadius: 6,
             fontSize: 13,
             outline: 'none',
             background: '#fff',
-            minWidth: 80,
+            minWidth: isCompact ? 0 : 80,
             color: '#333',
           }}
         >
@@ -111,6 +122,7 @@ export default function AddTodoBar() {
           type="button"
           onClick={handleAdd}
           style={{
+            flex: isCompact ? 1 : undefined,
             padding: '8px 22px',
             border: '1px solid #2d2d2d',
             borderRadius: 6,

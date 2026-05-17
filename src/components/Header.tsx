@@ -1,11 +1,15 @@
+import { useMediaQuery } from '../hooks/useMediaQuery';
+
 export default function Header() {
+  const { mobile } = useMediaQuery();
+
   return (
     <div>
-      <div style={{ marginBottom: 14 }}>
+      <div style={{ marginBottom: mobile ? 12 : 14 }}>
         <h1
           style={{
             margin: 0,
-            fontSize: 30,
+            fontSize: mobile ? 22 : 30,
             fontWeight: 800,
             color: '#1a1a1a',
             letterSpacing: 1,
@@ -16,7 +20,7 @@ export default function Header() {
         <p
           style={{
             margin: '4px 0 0',
-            fontSize: 13,
+            fontSize: mobile ? 12 : 13,
             color: '#999',
             letterSpacing: 2,
             fontWeight: 400,

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import type { Todo, Priority } from '../types/todo';
 import { useTodoStore } from '../store/useTodoStore';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface Props {
   todo: Todo;
@@ -29,6 +30,7 @@ const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart
 
 function TodoItem({ todo, onEdit, onDelete }: Props) {
   const toggleTodo = useTodoStore((s) => s.toggleTodo);
+  const { mobile } = useMediaQuery();
   const isOverdue = !!todo.dueDate && todo.dueDate < todayStr && !todo.completed;
 
   return (
@@ -36,17 +38,17 @@ function TodoItem({ todo, onEdit, onDelete }: Props) {
       style={{
         background: '#fff',
         borderRadius: 10,
-        padding: '12px 16px',
+        padding: mobile ? '10px 12px' : '12px 16px',
         border: '1px solid #2d2d2d',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         opacity: todo.completed ? 0.5 : 1,
         display: 'flex',
-        gap: 12,
-        alignItems: 'center',
+        gap: mobile ? 8 : 12,
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
         transition: 'opacity 0.2s',
       }}
     >
-      {/* 左侧：复选框 */}
       <input
         type="checkbox"
         name="todo-status"
@@ -58,14 +60,18 @@ function TodoItem({ todo, onEdit, onDelete }: Props) {
           cursor: 'pointer',
           flexShrink: 0,
           accentColor: '#0d9488',
+          marginTop: mobile ? 2 : 0,
         }}
       />
 
-      {/* 中间：标题 + 描述 */}
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{
+        flex: mobile ? '1 1 calc(100% - 30px)' : 1,
+        minWidth: 0,
+        order: mobile ? 2 : undefined,
+      }}>
         <div
           style={{
-            fontSize: 15,
+            fontSize: mobile ? 14 : 15,
             fontWeight: 600,
             textDecoration: todo.completed ? 'line-through' : 'none',
             color: todo.completed ? '#999' : '#1a1a1a',
@@ -94,13 +100,15 @@ function TodoItem({ todo, onEdit, onDelete }: Props) {
         )}
       </div>
 
-      {/* 右侧：分类标签 + 优先级 + 日期 + 操作 */}
       <div
         style={{
           display: 'flex',
           gap: 6,
           alignItems: 'center',
           flexShrink: 0,
+          flexWrap: 'wrap',
+          width: mobile ? '100%' : undefined,
+          marginLeft: mobile ? 26 : undefined,
         }}
       >
         {todo.category && (
@@ -140,11 +148,11 @@ function TodoItem({ todo, onEdit, onDelete }: Props) {
             {todo.dueDate}
           </span>
         )}
-        <div style={{ display: 'flex', gap: 4, marginLeft: 4 }}>
+        <div style={{ display: 'flex', gap: 4, marginLeft: mobile ? 0 : 4 }}>
           <button
             onClick={() => onEdit(todo.id)}
             style={{
-              padding: '4px 10px',
+              padding: mobile ? '6px 14px' : '4px 10px',
               border: '1px solid #2d2d2d',
               borderRadius: 5,
               background: '#fff',
@@ -158,7 +166,7 @@ function TodoItem({ todo, onEdit, onDelete }: Props) {
           <button
             onClick={() => onDelete(todo.id)}
             style={{
-              padding: '4px 10px',
+              padding: mobile ? '6px 14px' : '4px 10px',
               border: '1px solid #dc2626',
               borderRadius: 5,
               background: '#fff',
